@@ -27,8 +27,8 @@ stages:
       nfiles: 262
     - path: ingest.py
       hash: md5
-      md5: 58003d8f97a268e3c622897f18d8fc6b
-      size: 4691
+      md5: 0c4486eec273a8434776931027a4c8db
+      size: 1396
     params:
       params.yaml:
         TextSplitter:
@@ -39,27 +39,27 @@ stages:
     outs:
     - path: docs.json
       hash: md5
-      md5: f8778bd147329933c01eabe8b3253492
-      size: 73471050
+      md5: fde59b090e0373aaafe406ddabea697a
+      size: 1229954
     - path: metadatas.json
       hash: md5
-      md5: abcec91e4955e3519298bb815ce0dc7a
-      size: 3975161
+      md5: 53c7a3a2fa01225103e07c03b47ef9e1
+      size: 69964
   vectorize:
     cmd: python vector_store.py
     deps:
     - path: docs.json
       hash: md5
-      md5: f8778bd147329933c01eabe8b3253492
-      size: 73471050
+      md5: fde59b090e0373aaafe406ddabea697a
+      size: 1229954
     - path: metadatas.json
       hash: md5
-      md5: abcec91e4955e3519298bb815ce0dc7a
-      size: 3975161
+      md5: 53c7a3a2fa01225103e07c03b47ef9e1
+      size: 69964
     - path: vector_store.py
       hash: md5
-      md5: 73df04619c4785d816ac11db2fef04b7
-      size: 912
+      md5: e9d697e5730d63d2a59d5e95aba1faba
+      size: 812
     params:
       params.yaml:
         OpenAIEmbeddings:
@@ -70,12 +70,9 @@ stages:
     outs:
     - path: docs.index
       hash: md5
-      md5: 7e80c58b44cfca1da3723d8eaf1acf3a
-      size: 323002413
-    - path: faiss_store.pkl
-      hash: md5
-      md5: 4d55dd6c1ca04114aadc71cbeff18845
-      size: 80319348
+      md5: 9ff8c7ea857419c29381c2de4dc78c88.dir
+      size: 6747629
+      nfiles: 2
   run:
     cmd: python qa.py
     deps:
@@ -85,16 +82,13 @@ stages:
       size: 6467
     - path: docs.index
       hash: md5
-      md5: 7e80c58b44cfca1da3723d8eaf1acf3a
-      size: 323002413
-    - path: faiss_store.pkl
-      hash: md5
-      md5: 4d55dd6c1ca04114aadc71cbeff18845
-      size: 80319348
+      md5: 9ff8c7ea857419c29381c2de4dc78c88.dir
+      size: 6747629
+      nfiles: 2
     - path: qa.py
       hash: md5
-      md5: 41b32609d253b1e8f2a2b556e21cc92b
-      size: 1590
+      md5: 9ce74dfc385e0f6e8c7becd5d1b5c0d8
+      size: 1877
     params:
       params.yaml:
         ChatOpenAI:
@@ -102,6 +96,11 @@ stages:
           model_name: gpt-3.5-turbo
           temperature: 0.0
           verbose: true
+        OpenAIEmbeddings:
+          chunk_size: 1000
+          embedding_ctx_length: 8191
+          max_retries: 6
+          model: text-embedding-ada-002
         Retrieval:
           max_tokens_limit: 3375
           reduce_k_below_max_tokens: false
@@ -109,8 +108,8 @@ stages:
     outs:
     - path: results.csv
       hash: md5
-      md5: 70746233dc538f6c9d9484fae6848ffe
-      size: 4298
+      md5: c80cc3cc6f224b94f4571f1da2721353
+      size: 5851
   setup:
     cmd: bash setup.sh
     deps:
@@ -131,14 +130,18 @@ stages:
       size: 6467
     - path: eval.py
       hash: md5
-      md5: 9c2afc3fc90c9f2d71e1698a655b727f
-      size: 1193
+      md5: 889ff5ed9d293e3885e5ba09b50d24b6
+      size: 1255
     - path: results.csv
       hash: md5
-      md5: 70746233dc538f6c9d9484fae6848ffe
-      size: 4298
+      md5: c80cc3cc6f224b94f4571f1da2721353
+      size: 5851
+    params:
+      params.yaml:
+        Eval:
+          model_name: gpt-3.5-turbo
     outs:
     - path: eval.csv
       hash: md5
-      md5: cbda9d23aaea4d3473d25e070b47314d
-      size: 722
+      md5: 35cac70987c7ab8629fdc391995606f6
+      size: 724
