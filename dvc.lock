@@ -58,20 +58,19 @@ stages:
       size: 69964
     - path: vector_store.py
       hash: md5
-      md5: e9d697e5730d63d2a59d5e95aba1faba
-      size: 812
+      md5: 73490e86c79b867dfaa2e1eb490d90e6
+      size: 574
     params:
       params.yaml:
-        OpenAIEmbeddings:
-          chunk_size: 1000
-          embedding_ctx_length: 8191
-          max_retries: 6
-          model: text-embedding-ada-002
+        Embeddings:
+          num_ctx: 8191
+          model: llama2:7b
+          show_progress: true
     outs:
     - path: docs.index
       hash: md5
-      md5: 9ff8c7ea857419c29381c2de4dc78c88.dir
-      size: 6747629
+      md5: 3ed8a4f536b66ead3c6272548e47aba6.dir
+      size: 15793100
       nfiles: 2
   run:
     cmd: python qa.py
@@ -82,25 +81,21 @@ stages:
       size: 6467
     - path: docs.index
       hash: md5
-      md5: 9ff8c7ea857419c29381c2de4dc78c88.dir
-      size: 6747629
+      md5: 3ed8a4f536b66ead3c6272548e47aba6.dir
+      size: 15793100
       nfiles: 2
     - path: qa.py
       hash: md5
-      md5: 9ce74dfc385e0f6e8c7becd5d1b5c0d8
-      size: 1877
+      md5: 7cb0350272762980e5a6a28eb64a7fef
+      size: 1514
     params:
       params.yaml:
-        ChatOpenAI:
-          max_retries: 6
-          model_name: gpt-3.5-turbo
-          temperature: 0.0
-          verbose: true
-        OpenAIEmbeddings:
-          chunk_size: 1000
-          embedding_ctx_length: 8191
-          max_retries: 6
-          model: text-embedding-ada-002
+        Chat:
+          model: llama2:7b
+        Embeddings:
+          num_ctx: 8191
+          model: llama2:7b
+          show_progress: true
         Retrieval:
           max_tokens_limit: 3375
           reduce_k_below_max_tokens: false
@@ -108,8 +103,8 @@ stages:
     outs:
     - path: results.csv
       hash: md5
-      md5: c80cc3cc6f224b94f4571f1da2721353
-      size: 5851
+      md5: e3f1c3316fc64c52deeed9f4f926aaa0
+      size: 9493
   setup:
     cmd: bash setup.sh
     deps:
@@ -119,8 +114,8 @@ stages:
       size: 2275
     - path: setup.sh
       hash: md5
-      md5: 1881cad25780801542082d6721a35d2f
-      size: 374
+      md5: e99c2ce134bc2775626551e823a8b8ef
+      size: 251
   eval:
     cmd: python eval.py
     deps:
@@ -130,18 +125,18 @@ stages:
       size: 6467
     - path: eval.py
       hash: md5
-      md5: 889ff5ed9d293e3885e5ba09b50d24b6
+      md5: 54f4bf667cde7c43cc12d1a574f937e6
       size: 1255
     - path: results.csv
       hash: md5
-      md5: c80cc3cc6f224b94f4571f1da2721353
-      size: 5851
+      md5: e3f1c3316fc64c52deeed9f4f926aaa0
+      size: 9493
     params:
       params.yaml:
         Eval:
-          model_name: gpt-3.5-turbo
+          model: llama2:7b
     outs:
     - path: eval.csv
       hash: md5
-      md5: 35cac70987c7ab8629fdc391995606f6
-      size: 724
+      md5: 1ad2ebde4ae50e12cef8a406c74fe210
+      size: 6671
