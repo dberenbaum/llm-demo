@@ -1,7 +1,7 @@
 """Ask a question to the notion database."""
-from langchain.chat_models import ChatOpenAI
+from langchain.chat_models import ChatOllama
 from langchain.chains import RetrievalQAWithSourcesChain
-from langchain.embeddings import OpenAIEmbeddings
+from langchain.embeddings import OllamaEmbeddings
 from langchain.vectorstores import FAISS
 import os
 import pickle
@@ -10,24 +10,20 @@ import dvc.api
 
 
 params = dvc.api.params_show()
-emb_params = params['OpenAIEmbeddings']
-chat_params = params['ChatOpenAI']
+emb_params = params['Embeddings']
+chat_params = params['Chat']
 qa_params = params['Retrieval']
 print(chat_params)
 print(qa_params)
 
 # Load the LangChain.
-emb = OpenAIEmbeddings(chunk_size=emb_params['chunk_size'],
-                       embedding_ctx_length=emb_params['embedding_ctx_length'],
-                       max_retries=emb_params['max_retries'],
-                       model=emb_params['model'])
-
+emb = OllamaEmbeddings(**emb_params)
 store = FAISS.load_local("docs.index", emb)
 
 df = pd.read_csv("canfy.csv")
 sample_questions = df["Q"].to_list()
 
-llm = ChatOpenAI(temperature=chat_params['temperature'], model_name=chat_params['model_name'], max_retries=chat_params['max_retries'], verbose=chat_params['verbose'])
+llm = ChatOllama(**chat_params)
 chain = RetrievalQAWithSourcesChain.from_chain_type(llm=llm,
                                                     retriever=store.as_retriever(), max_tokens_limit=qa_params['max_tokens_limit'],
                                                     reduce_k_below_max_tokens=qa_params['reduce_k_below_max_tokens'],

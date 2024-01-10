@@ -3,7 +3,7 @@ import json
 import streamlit as st
 from streamlit_chat import message
 import faiss
-from langchain.chat_models import ChatOpenAI
+from langchain.chat_models import ChatOllama
 from langchain.chains import RetrievalQAWithSourcesChain
 import pickle
 import dvc.api
@@ -12,7 +12,7 @@ import langchain
 langchain.debug = True
 
 params = dvc.api.params_show()
-chat_params = params['ChatOpenAI']
+chat_params = params['Chat']
 qa_params = params['Retrieval']
 
 # Load the LangChain.
@@ -22,8 +22,8 @@ with open("faiss_store.pkl", "rb") as f:
     store = pickle.load(f)
 
 store.index = index
-llm = ChatOpenAI(temperature=chat_params['temperature'], model_name=chat_params['model_name'], max_retries=chat_params['max_retries'], verbose=chat_params['verbose'])
-chain = RetrievalQAWithSourcesChain.from_chain_type(llm=ChatOpenAI(temperature=0), retriever=store.as_retriever(),
+llm = ChatOllama(**chat_params)
+chain = RetrievalQAWithSourcesChain.from_chain_type(llm=llm, retriever=store.as_retriever(),
                                                     max_tokens_limit=qa_params['max_tokens_limit'],
                                                     reduce_k_below_max_tokens=qa_params['reduce_k_below_max_tokens'],
                                                     verbose=qa_params['verbose'])

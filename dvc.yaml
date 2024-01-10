@@ -24,7 +24,7 @@ stages:
   vectorize:
     cmd: python vector_store.py
     params:
-    - OpenAIEmbeddings
+    - Embeddings
     deps:
     - docs.json
     - metadatas.json
@@ -34,8 +34,8 @@ stages:
   run:
     cmd: python qa.py
     params:
-    - OpenAIEmbeddings
-    - ChatOpenAI
+    - Embeddings
+    - Chat
     - Retrieval
     deps:
     - docs.index

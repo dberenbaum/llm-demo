@@ -110,8 +110,8 @@ stages:
     deps:
     - path: requirements.txt
       hash: md5
-      md5: 7879f8f8d504fc5f1494df3ba23b96c7
-      size: 2275
+      md5: 632aca6f221712966f94dd2b46af4827
+      size: 2847
     - path: setup.sh
       hash: md5
       md5: e99c2ce134bc2775626551e823a8b8ef

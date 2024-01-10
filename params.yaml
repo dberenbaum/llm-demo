@@ -7,14 +7,11 @@ Embeddings:
   num_ctx: 8191
   model: 'llama2:7b'
   show_progress: true
-ChatOpenAI:
-  max_retries: 6
-  model_name: gpt-3.5-turbo
-  temperature: 0.0
-  verbose: True
+Chat:
+  model: 'llama2:7b'
 Retrieval:
   max_tokens_limit: 3375
   reduce_k_below_max_tokens: False
   verbose: True
 Eval:
-  model_name: gpt-3.5-turbo
+  model: 'llama2:7b'

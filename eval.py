@@ -1,4 +1,4 @@
-from langchain.llms import OpenAI
+from langchain.llms import Ollama
 from langchain.prompts import PromptTemplate
 from langchain.schema import HumanMessage
 import pandas as pd
@@ -23,7 +23,7 @@ Respond with a number on the scale of 0 to 4.
 """
 
 params = dvc.api.params_show()
-llm = OpenAI(**params["Eval"])
+llm = Ollama(**params["Eval"])
 
 truth = pd.read_csv("canfy.csv")
 predictions = pd.read_csv("results.csv")
