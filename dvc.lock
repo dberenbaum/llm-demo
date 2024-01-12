@@ -126,8 +126,8 @@ stages:
     deps:
     - path: eval.py
       hash: md5
-      md5: 2128805d6284756e44b342be82dae985
-      size: 1040
+      md5: 4810f73dac9634ac1097a5e04570dc09
+      size: 1260
     - path: ground_truths.csv
       hash: md5
       md5: f4d4c1221515fe413e7cdf383c1ab2db
@@ -139,8 +139,8 @@ stages:
     outs:
     - path: eval.csv
       hash: md5
-      md5: c5ab0d0ca92ec5ba7364e95c44016240
-      size: 46646
+      md5: 68b329da9893e34099c7d8ad5cb9c940
+      size: 1
   eval-ragas:
     cmd: python eval_ragas.py
     deps:
@@ -161,3 +161,23 @@ stages:
       hash: md5
       md5: 0e5e02f44e3a50c48942a71452d22296
       size: 11105
+  eval_ragas:
+    cmd: python eval_ragas.py
+    deps:
+    - path: eval_ragas.py
+      hash: md5
+      md5: eb8a71c10e09837b821ccbd6b3bc5087
+      size: 1046
+    - path: ground_truths.csv
+      hash: md5
+      md5: f4d4c1221515fe413e7cdf383c1ab2db
+      size: 6467
+    - path: results.json
+      hash: md5
+      md5: 4eb830ea68f9587d6de3061765408a7f
+      size: 43355
+    outs:
+    - path: eval_ragas.csv
+      hash: md5
+      md5: d5015764104e9d25ea0acd45fef5d401
+      size: 46645
