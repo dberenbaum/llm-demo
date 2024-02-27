@@ -25,14 +25,14 @@ Respond with a number on the scale of 0 to 4.
 params = dvc.api.params_show()
 llm = OpenAI(**params["Eval"])
 
-truth = pd.read_csv("canfy.csv")
-predictions = pd.read_csv("results.csv")
+truth = pd.read_csv("ground_truths.csv")
+predictions = pd.read_csv("results.json")
 
 records = []
 for row in range(len(predictions)):
     question = truth.loc[row]["Q"]
     answer = truth.loc[row]["A"]
-    result = predictions.loc[row]["A"]
+    result = predictions[row]["A"]
 
     prompt = PromptTemplate.from_template(template)
     text = prompt.format(question=question, answer=answer, result=result)
