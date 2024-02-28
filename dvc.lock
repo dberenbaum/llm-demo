@@ -78,11 +78,12 @@ stages:
           model_kwargs:
             device: cpu
           encode_kwargs:
-            normalize_embeddings: false
+            normalize_embeddings: true
+            show_progress_bar: true
     outs:
     - path: docs.index
       hash: md5
-      md5: 4043dbc3e0313fae7f2d1a9d1fbfdd55.dir
+      md5: cbf3b9f1f951ad5e1cb914d5d786889e.dir
       size: 4038604
       nfiles: 2
   run:
@@ -90,7 +91,7 @@ stages:
     deps:
     - path: docs.index
       hash: md5
-      md5: 4043dbc3e0313fae7f2d1a9d1fbfdd55.dir
+      md5: cbf3b9f1f951ad5e1cb914d5d786889e.dir
       size: 4038604
       nfiles: 2
     - path: ground_truths.csv
@@ -99,8 +100,8 @@ stages:
       size: 6467
     - path: qa.py
       hash: md5
-      md5: b09880cc27f5b0bafc39badfb8c80156
-      size: 1731
+      md5: 2ab451c19db87400397259450fb06297
+      size: 1548
     params:
       params.yaml:
         ChatLLM:
@@ -110,7 +111,8 @@ stages:
           model_kwargs:
             device: cpu
           encode_kwargs:
-            normalize_embeddings: false
+            normalize_embeddings: true
+            show_progress_bar: true
         Retrieval:
           max_tokens_limit: 3375
           reduce_k_below_max_tokens: false
@@ -118,8 +120,8 @@ stages:
     outs:
     - path: results.json
       hash: md5
-      md5: 5dcb9104995cc935b2b16eb2325592ae
-      size: 42126
+      md5: f32167a4d4a34920391fe79124cdbc9e
+      size: 41988
   eval:
     cmd: python eval.py
     deps:
@@ -133,13 +135,13 @@ stages:
       size: 6467
     - path: results.json
       hash: md5
-      md5: 5dcb9104995cc935b2b16eb2325592ae
-      size: 42126
+      md5: f32167a4d4a34920391fe79124cdbc9e
+      size: 41988
     outs:
     - path: eval.csv
       hash: md5
-      md5: 00e5a9004b127d70a3ec50e68e93b686
-      size: 3608
+      md5: a176abe870c6db4b9cecd96641869bb4
+      size: 3261
   eval-ragas:
     cmd: python eval_ragas.py
     deps:
@@ -173,10 +175,10 @@ stages:
       size: 6467
     - path: results.json
       hash: md5
-      md5: 5dcb9104995cc935b2b16eb2325592ae
-      size: 42126
+      md5: f32167a4d4a34920391fe79124cdbc9e
+      size: 41988
     outs:
     - path: eval_ragas.csv
       hash: md5
-      md5: 80b6af8780bc53f96d8fb4c99995b0fa
-      size: 45864
+      md5: 848d73851966300ae4b4e8a4bb2d2c22
+      size: 45710

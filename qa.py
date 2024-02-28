@@ -28,9 +28,8 @@ sample_questions = df["Q"].to_list()
 
 llm = HuggingFaceHub(**chat_params)
 chain = RetrievalQAWithSourcesChain.from_chain_type(llm=llm,
-                                                    retriever=retriever, max_tokens_limit=qa_params['max_tokens_limit'],
-                                                    reduce_k_below_max_tokens=qa_params['reduce_k_below_max_tokens'],
-                                                    verbose=qa_params['verbose'])
+                                                    retriever=retriever,
+                                                    **qa_params)
 
 records = []
 for question in sample_questions:
