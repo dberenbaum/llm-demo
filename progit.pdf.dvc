@@ -1,0 +1,12 @@
+md5: 0e7cedbba00bf8009aa4344b2c2eda63
+frozen: true
+deps:
+- checksum: '"0x8DC42C6C22165A7"'
+  size: 18834117
+  hash: md5
+  path: https://github.com/progit/progit2/releases/download/2.1.423/progit.pdf
+outs:
+- md5: e6e374ff125230999da81d11085b09b2
+  size: 18834117
+  hash: md5
+  path: progit.pdf
