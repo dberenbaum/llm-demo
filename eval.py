@@ -1,4 +1,4 @@
-from langchain.llms import OpenAI
+from langchain.llms import HuggingFaceHub
 from langchain.prompts import PromptTemplate
 from langchain.schema import HumanMessage
 import pandas as pd
@@ -23,16 +23,16 @@ Respond with a number on the scale of 0 to 4.
 """
 
 params = dvc.api.params_show()
-llm = OpenAI(**params["Eval"])
+llm = HuggingFaceHub(**params["Eval"])
 
 truth = pd.read_csv("ground_truths.csv")
-predictions = pd.read_csv("results.json")
+predictions = pd.read_json("results.json")
 
 records = []
 for row in range(len(predictions)):
     question = truth.loc[row]["Q"]
     answer = truth.loc[row]["A"]
-    result = predictions[row]["A"]
+    result = predictions.loc[row]["A"]
 
     prompt = PromptTemplate.from_template(template)
     text = prompt.format(question=question, answer=answer, result=result)

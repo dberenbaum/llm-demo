@@ -69,28 +69,30 @@ stages:
       size: 69964
     - path: vector_store.py
       hash: md5
-      md5: e9d697e5730d63d2a59d5e95aba1faba
-      size: 812
+      md5: 1cc3f7e460d667600c2ad56bde5d54d3
+      size: 594
     params:
       params.yaml:
-        OpenAIEmbeddings:
-          chunk_size: 1000
-          embedding_ctx_length: 8191
-          max_retries: 6
-          model: text-embedding-ada-002
+        Embeddings:
+          model_name: sentence-transformers/all-mpnet-base-v2
+          model_kwargs:
+            device: cpu
+          encode_kwargs:
+            normalize_embeddings: true
+            show_progress_bar: true
     outs:
     - path: docs.index
       hash: md5
-      md5: 9ff8c7ea857419c29381c2de4dc78c88.dir
-      size: 6747629
+      md5: cbf3b9f1f951ad5e1cb914d5d786889e.dir
+      size: 4038604
       nfiles: 2
   run:
     cmd: python qa.py
     deps:
     - path: docs.index
       hash: md5
-      md5: 9ff8c7ea857419c29381c2de4dc78c88.dir
-      size: 6747629
+      md5: cbf3b9f1f951ad5e1cb914d5d786889e.dir
+      size: 4038604
       nfiles: 2
     - path: ground_truths.csv
       hash: md5
@@ -98,20 +100,19 @@ stages:
       size: 6467
     - path: qa.py
       hash: md5
-      md5: 43c1a5f29d7f3c5a8e264570389581dd
-      size: 2059
+      md5: 2ab451c19db87400397259450fb06297
+      size: 1548
     params:
       params.yaml:
-        ChatOpenAI:
-          max_retries: 6
-          model_name: gpt-3.5-turbo
-          temperature: 0.0
-          verbose: true
-        OpenAIEmbeddings:
-          chunk_size: 1000
-          embedding_ctx_length: 8191
-          max_retries: 6
-          model: text-embedding-ada-002
+        ChatLLM:
+          repo_id: HuggingFaceH4/zephyr-7b-beta
+        Embeddings:
+          model_name: sentence-transformers/all-mpnet-base-v2
+          model_kwargs:
+            device: cpu
+          encode_kwargs:
+            normalize_embeddings: true
+            show_progress_bar: true
         Retrieval:
           max_tokens_limit: 3375
           reduce_k_below_max_tokens: false
@@ -119,28 +120,28 @@ stages:
     outs:
     - path: results.json
       hash: md5
-      md5: 4eb830ea68f9587d6de3061765408a7f
-      size: 43355
+      md5: f32167a4d4a34920391fe79124cdbc9e
+      size: 41988
   eval:
     cmd: python eval.py
     deps:
     - path: eval.py
       hash: md5
-      md5: 4810f73dac9634ac1097a5e04570dc09
-      size: 1260
+      md5: 9bdd109eae3eaabb73564eff4497fe8e
+      size: 1281
     - path: ground_truths.csv
       hash: md5
       md5: f4d4c1221515fe413e7cdf383c1ab2db
       size: 6467
     - path: results.json
       hash: md5
-      md5: 4eb830ea68f9587d6de3061765408a7f
-      size: 43355
+      md5: f32167a4d4a34920391fe79124cdbc9e
+      size: 41988
     outs:
     - path: eval.csv
       hash: md5
-      md5: 68b329da9893e34099c7d8ad5cb9c940
-      size: 1
+      md5: a176abe870c6db4b9cecd96641869bb4
+      size: 3261
   eval-ragas:
     cmd: python eval_ragas.py
     deps:
@@ -174,10 +175,10 @@ stages:
       size: 6467
     - path: results.json
       hash: md5
-      md5: 4eb830ea68f9587d6de3061765408a7f
-      size: 43355
+      md5: f32167a4d4a34920391fe79124cdbc9e
+      size: 41988
     outs:
     - path: eval_ragas.csv
       hash: md5
-      md5: d5015764104e9d25ea0acd45fef5d401
-      size: 46645
+      md5: 848d73851966300ae4b4e8a4bb2d2c22
+      size: 45710
