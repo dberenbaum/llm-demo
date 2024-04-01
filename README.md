@@ -33,7 +33,8 @@ The preceeding spaces prevent the API key from staying in your bash history if t
 
 Now you should be ready to re-run the training pipeline. Assuming you have not changed anything, nothing should need to run. Everything can be re-used for the DVC pull:
 ```shell
-dvc repro --pull
+dvc pull progit.pdf
+dvc repro
 ```
 
 Now you can startup the web UI using:
