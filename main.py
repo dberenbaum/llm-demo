@@ -2,35 +2,34 @@
 import json
 import streamlit as st
 from streamlit_chat import message
-import faiss
-from langchain.chat_models import ChatOpenAI
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.llms import HuggingFaceHub
 from langchain.chains import RetrievalQAWithSourcesChain
-import pickle
+from langchain.vectorstores import FAISS
 import dvc.api
 
 import langchain
 langchain.debug = True
 
 params = dvc.api.params_show()
-chat_params = params['ChatOpenAI']
+emb_params = params['Embeddings']
+chat_params = params['ChatLLM']
 qa_params = params['Retrieval']
 
 # Load the LangChain.
-index = faiss.read_index("docs.index")
+emb = HuggingFaceEmbeddings(**emb_params)
 
-with open("faiss_store.pkl", "rb") as f:
-    store = pickle.load(f)
+store = FAISS.load_local("docs.index", emb)
+retriever = store.as_retriever()
 
-store.index = index
-llm = ChatOpenAI(temperature=chat_params['temperature'], model_name=chat_params['model_name'], max_retries=chat_params['max_retries'], verbose=chat_params['verbose'])
-chain = RetrievalQAWithSourcesChain.from_chain_type(llm=ChatOpenAI(temperature=0), retriever=store.as_retriever(),
-                                                    max_tokens_limit=qa_params['max_tokens_limit'],
-                                                    reduce_k_below_max_tokens=qa_params['reduce_k_below_max_tokens'],
-                                                    verbose=qa_params['verbose'])
+llm = HuggingFaceHub(**chat_params)
+chain = RetrievalQAWithSourcesChain.from_chain_type(llm=llm,
+                                                    retriever=retriever,
+                                                    **qa_params)
 
 # From here down is all the StreamLit UI.
-st.set_page_config(page_title="DVC QA Bot", page_icon=":robot:")
-st.header("DVC QA Bot")
+st.set_page_config(page_title="Git QA Bot", page_icon=":robot:")
+st.header("Git QA Bot")
 
 if "generated" not in st.session_state:
     st.session_state["generated"] = []

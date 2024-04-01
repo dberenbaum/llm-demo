@@ -1,0 +1,13 @@
+Q,A,cite
+What is version control?,Version control is a system that records changes to a file or set of files over time so that you can recall specific versions later.,Page: 10
+How to create a new repository?,"Start by clicking the “New repository” button on the right-hand side of the dashboard, or from the + button in the top toolbar next to your username as seen in The “New repository” dropdown. Provide a project name and click the “Create Repository” button. Since you have no code there yet, GitHub will show you instructions for how to create a brand-new Git repository, or connect an existing Git project.",Page: 191
+How can I delete references from the server?,"You can use the refspec to delete references from the remote server by running something like this:
+
+```
+$ git push origin :topic
+```
+Because the refspec is <src>:<dst>, by leaving off the <src> part, this basically says to make the topic branch on the remote nothing, which deletes it. Or you can use the newer syntax (available since Git v1.7.0): 
+
+```
+$ git push origin --delete topic
+```",Page: 434

@@ -5,8 +5,8 @@ stages:
     deps:
     - path: requirements.txt
       hash: md5
-      md5: d739f72a332fc5593577374969a06656
-      size: 2971
+      md5: b932dcdba32807afaa351e7f5c434923
+      size: 2985
     - path: setup.sh
       hash: md5
       md5: 1881cad25780801542082d6721a35d2f
@@ -38,8 +38,8 @@ stages:
       nfiles: 262
     - path: ingest.py
       hash: md5
-      md5: 0c4486eec273a8434776931027a4c8db
-      size: 1396
+      md5: 3fd9313fa6328a66edd5df50365d5c89
+      size: 658
     params:
       params.yaml:
         TextSplitter:
@@ -50,23 +50,23 @@ stages:
     outs:
     - path: docs.json
       hash: md5
-      md5: fde59b090e0373aaafe406ddabea697a
-      size: 1229954
+      md5: 996927057b3a62f62f91026de328737f
+      size: 806223
     - path: metadatas.json
       hash: md5
-      md5: 53c7a3a2fa01225103e07c03b47ef9e1
-      size: 69964
+      md5: 0c50c613202d5bfedfcfccfe52abfc4e
+      size: 10985
   vectorize:
     cmd: python vector_store.py
     deps:
     - path: docs.json
       hash: md5
-      md5: fde59b090e0373aaafe406ddabea697a
-      size: 1229954
+      md5: 996927057b3a62f62f91026de328737f
+      size: 806223
     - path: metadatas.json
       hash: md5
-      md5: 53c7a3a2fa01225103e07c03b47ef9e1
-      size: 69964
+      md5: 0c50c613202d5bfedfcfccfe52abfc4e
+      size: 10985
     - path: vector_store.py
       hash: md5
       md5: 1cc3f7e460d667600c2ad56bde5d54d3
@@ -83,21 +83,21 @@ stages:
     outs:
     - path: docs.index
       hash: md5
-      md5: cbf3b9f1f951ad5e1cb914d5d786889e.dir
-      size: 4038604
+      md5: a5a19ab5099217be7a2887412c7342b3.dir
+      size: 2193521
       nfiles: 2
   run:
     cmd: python qa.py
     deps:
     - path: docs.index
       hash: md5
-      md5: cbf3b9f1f951ad5e1cb914d5d786889e.dir
-      size: 4038604
+      md5: a5a19ab5099217be7a2887412c7342b3.dir
+      size: 2193521
       nfiles: 2
     - path: ground_truths.csv
       hash: md5
-      md5: f4d4c1221515fe413e7cdf383c1ab2db
-      size: 6467
+      md5: a26c282ef7fedbe00ac47917c88dbc19
+      size: 1087
     - path: qa.py
       hash: md5
       md5: 2ab451c19db87400397259450fb06297
@@ -120,8 +120,8 @@ stages:
     outs:
     - path: results.json
       hash: md5
-      md5: f32167a4d4a34920391fe79124cdbc9e
-      size: 41988
+      md5: 630020d9e3b7b41d5712cb7f48233e5c
+      size: 21864
   eval:
     cmd: python eval.py
     deps:
@@ -131,17 +131,17 @@ stages:
       size: 1281
     - path: ground_truths.csv
       hash: md5
-      md5: f4d4c1221515fe413e7cdf383c1ab2db
-      size: 6467
+      md5: a26c282ef7fedbe00ac47917c88dbc19
+      size: 1087
     - path: results.json
       hash: md5
-      md5: f32167a4d4a34920391fe79124cdbc9e
-      size: 41988
+      md5: 630020d9e3b7b41d5712cb7f48233e5c
+      size: 21864
     outs:
     - path: eval.csv
       hash: md5
-      md5: a176abe870c6db4b9cecd96641869bb4
-      size: 3261
+      md5: fe8c3c2540a46e6481ce0b9a3e9a89d3
+      size: 1419
   eval-ragas:
     cmd: python eval_ragas.py
     deps:
@@ -171,14 +171,14 @@ stages:
       size: 1046
     - path: ground_truths.csv
       hash: md5
-      md5: f4d4c1221515fe413e7cdf383c1ab2db
-      size: 6467
+      md5: a26c282ef7fedbe00ac47917c88dbc19
+      size: 1087
     - path: results.json
       hash: md5
-      md5: f32167a4d4a34920391fe79124cdbc9e
-      size: 41988
+      md5: 630020d9e3b7b41d5712cb7f48233e5c
+      size: 21864
     outs:
     - path: eval_ragas.csv
       hash: md5
-      md5: 848d73851966300ae4b4e8a4bb2d2c22
-      size: 45710
+      md5: ea1520b839bb2b57ad915efc25d2b578
+      size: 22606
