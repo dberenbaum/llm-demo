@@ -9,7 +9,7 @@ stages:
     params:
     - TextSplitter
     deps:
-    - data
+    - progit.pdf
     - ingest.py
     outs:
     - docs.json
