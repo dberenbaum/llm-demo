@@ -4,19 +4,12 @@ stages:
     deps:
     - setup.sh
     - requirements.txt
-  expand:
-    cmd: bash expand_data.sh
-    deps:
-    - docs_dump.zip
-    - expand_data.sh
-    outs:
-    - data
   ingest:
     cmd: python ingest.py
     params:
     - TextSplitter
     deps:
-    - data
+    - progit.pdf
     - ingest.py
     outs:
     - docs.json
