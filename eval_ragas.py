@@ -42,4 +42,6 @@ result = evaluate(
 )
 
 df = result.to_pandas()
+# Convert list back to str
+df["ground_truths"] = df["ground_truths"].apply(lambda x: x[0])
 df.to_csv("eval_ragas.csv", header=True, index=False)

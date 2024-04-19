@@ -1,8 +1,9 @@
+import json
+import pandas as pd
 from langchain.llms import HuggingFaceHub
 from langchain.prompts import PromptTemplate
 from langchain.schema import HumanMessage
-import pandas as pd
-import dvc.api
+from ruamel.yaml import YAML
 
 
 template = """
@@ -22,17 +23,19 @@ You are grading the following predicted answer:
 Respond with a number on the scale of 0 to 4.
 """
 
-params = dvc.api.params_show()
+with open("params.yaml") as f:
+    params = YAML().load(f)
 llm = HuggingFaceHub(**params["Eval"])
 
 truth = pd.read_csv("ground_truths.csv")
-predictions = pd.read_json("results.json")
+with open("results.json") as f:
+    predictions = json.load(f)
 
 records = []
 for row in range(len(predictions)):
     question = truth.loc[row]["Q"]
     answer = truth.loc[row]["A"]
-    result = predictions.loc[row]["A"]
+    result = predictions[row]["A"]
 
     prompt = PromptTemplate.from_template(template)
     text = prompt.format(question=question, answer=answer, result=result)

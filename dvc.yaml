@@ -29,7 +29,6 @@ stages:
     params:
     - Embeddings
     - ChatLLM
-    - Retrieval
     deps:
     - docs.index
     - ground_truths.csv

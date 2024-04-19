@@ -142,3 +142,6 @@ dmypy.json
 /eval_ragas.csv
 /results.json
 /progit.pdf
+
+# VS Code
+.vscode/

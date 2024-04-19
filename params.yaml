@@ -12,9 +12,5 @@ Embeddings:
     show_progress_bar: true
 ChatLLM:
   repo_id: 'HuggingFaceH4/zephyr-7b-beta'
-Retrieval:
-  max_tokens_limit: 3375
-  reduce_k_below_max_tokens: False
-  verbose: True
 Eval:
   repo_id: 'HuggingFaceH4/zephyr-7b-beta'

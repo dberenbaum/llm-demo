@@ -1,13 +1,14 @@
 import faiss
-from langchain.vectorstores import FAISS
-from langchain_community.embeddings import HuggingFaceEmbeddings
 import pickle
 import json
-import dvc.api
+from langchain.vectorstores import FAISS
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from ruamel.yaml import YAML
 
 
-params = dvc.api.params_show()['Embeddings']
-print(params)
+with open("params.yaml") as f:
+    params = YAML().load(f)
+emb_params = params['Embeddings']
 
 with open("docs.json", "r") as f:
     docs = json.load(f)
@@ -17,7 +18,7 @@ with open("metadatas.json", "r") as f:
 
 print(f"Processing {len(docs)} documents.")
 
-emb = HuggingFaceEmbeddings(**params)
+emb = HuggingFaceEmbeddings(**emb_params)
 
 # Here we create a vector store from the documents and save it to disk.
 store = FAISS.from_texts(docs, emb, metadatas=metadatas)
