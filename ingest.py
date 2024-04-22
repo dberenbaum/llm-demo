@@ -1,25 +1,34 @@
 import json
 from PyPDF2 import PdfReader
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_text_splitters import CharacterTextSplitter
+from ruamel.yaml import YAML
 
 
 def extract_pages_from_pdf(pdf_path):
     docs = []
-    metadatas = []
-    with open(pdf_path, 'rb') as pdf_file:
-        reader = PdfReader(pdf_file)
-        for page in range(15,458):
-            text = reader.pages[page].extract_text()
-            docs.append(text)
-            metadatas.append({"source": "Page: " + str(page-5)})
-    return docs, metadatas
+    loader = PyPDFLoader(pdf_path)
+    pages = loader.load_and_split()
+    # Skip intro and appendix
+    for page in range(17, 460):
+        text = pages[page].page_content
+        docs.append(text)
+    return docs
+
+
+def split_docs(docs):
+    with open("params.yaml") as f:
+        params = YAML().load(f)
+    split_params = params['TextSplitter']
+
+    text_splitter = CharacterTextSplitter(separator="\n", **split_params)
+    return text_splitter.split_text("\n".join(docs))
 
 
 if __name__ == '__main__':
-    pdf_path = 'progit.pdf'
-    docs, metadatas = extract_pages_from_pdf(pdf_path)
+    pdf_path = 'https://github.com/progit/progit2/releases/download/2.1.426/progit.pdf'
+    docs = extract_pages_from_pdf(pdf_path)
+    docs = split_docs(docs)
 
     with open("docs.json", "w") as f:
         json.dump(docs, f)
-
-    with open("metadatas.json", "w") as f:
-        json.dump(metadatas, f)

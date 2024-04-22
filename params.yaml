@@ -2,7 +2,6 @@ TextSplitter:
   chunk_size: 1500
   chunk_overlap: 200
   keep_separator: False
-  add_start_index: False
 Embeddings:
   model_name: 'sentence-transformers/all-mpnet-base-v2'
   model_kwargs:

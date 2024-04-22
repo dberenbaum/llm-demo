@@ -13,13 +13,10 @@ emb_params = params['Embeddings']
 with open("docs.json", "r") as f:
     docs = json.load(f)
 
-with open("metadatas.json", "r") as f:
-    metadatas = json.load(f)
-
 print(f"Processing {len(docs)} documents.")
 
 emb = HuggingFaceEmbeddings(**emb_params)
 
 # Here we create a vector store from the documents and save it to disk.
-store = FAISS.from_texts(docs, emb, metadatas=metadatas)
+store = FAISS.from_texts(docs, emb)
 store.save_local("docs.index")
