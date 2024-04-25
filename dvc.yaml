@@ -1,9 +1,4 @@
 stages:
-  setup:
-    cmd: bash setup.sh
-    deps:
-    - setup.sh
-    - requirements.txt
   ingest:
     cmd: python ingest.py
     params:

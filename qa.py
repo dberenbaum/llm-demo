@@ -4,10 +4,10 @@ import os
 import pickle
 import pandas as pd
 from langchain import hub
-from langchain_community.llms import HuggingFaceHub
+from langchain_community.llms import HuggingFaceEndpoint
 from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import FAISS
 from langchain.prompts import PromptTemplate
-from langchain.vectorstores import FAISS
 from ruamel.yaml import YAML
 
 
@@ -19,13 +19,13 @@ chat_params = params['ChatLLM']
 # Load the LangChain.
 emb = HuggingFaceEmbeddings(**emb_params)
 
-store = FAISS.load_local("docs.index", emb)
+store = FAISS.load_local("docs.index", emb, allow_dangerous_deserialization=True)
 retriever = store.as_retriever()
 
 df = pd.read_csv("ground_truths.csv")
 sample_questions = df["Q"].to_list()
 
-llm = HuggingFaceHub(**chat_params)
+llm = HuggingFaceEndpoint(**chat_params)
 prompt = hub.pull("rlm/rag-prompt").messages[0].prompt
 
 records = []

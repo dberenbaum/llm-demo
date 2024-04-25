@@ -1,5 +1,4 @@
 import json
-from PyPDF2 import PdfReader
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import CharacterTextSplitter
 from ruamel.yaml import YAML

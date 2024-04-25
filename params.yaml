@@ -8,8 +8,5 @@ Embeddings:
     device: cpu
   encode_kwargs:
     normalize_embeddings: true
-    show_progress_bar: true
 ChatLLM:
-  repo_id: 'HuggingFaceH4/zephyr-7b-beta'
-Eval:
   repo_id: 'HuggingFaceH4/zephyr-7b-beta'

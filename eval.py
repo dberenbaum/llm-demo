@@ -1,6 +1,6 @@
 import json
 import pandas as pd
-from langchain.llms import HuggingFaceHub
+from langchain_community.llms import HuggingFaceEndpoint
 from langchain.prompts import PromptTemplate
 from langchain.schema import HumanMessage
 from ruamel.yaml import YAML
@@ -25,7 +25,7 @@ Respond with a number on the scale of 0 to 4.
 
 with open("params.yaml") as f:
     params = YAML().load(f)
-llm = HuggingFaceHub(**params["Eval"])
+llm = HuggingFaceEndpoint(**params["ChatLLM"])
 
 truth = pd.read_csv("ground_truths.csv")
 with open("results.json") as f:
