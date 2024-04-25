@@ -1,6 +1,6 @@
 import json
 from langchain_community.document_loaders import PyPDFLoader
-from langchain_text_splitters import CharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from ruamel.yaml import YAML
 
 
@@ -20,7 +20,7 @@ def split_docs(docs):
         params = YAML().load(f)
     split_params = params['TextSplitter']
 
-    text_splitter = CharacterTextSplitter(separator="\n", **split_params)
+    text_splitter = RecursiveCharacterTextSplitter(separators=[".\n", ".", "\n"], **split_params)
     return text_splitter.split_text("\n".join(docs))
 
 
