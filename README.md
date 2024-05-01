@@ -5,7 +5,7 @@ book](https://git-scm.com/book/en/v2) as documentation.
 
 This is a chatbot about Git where the training pipeline was built using DVC.
 
-It was forked off from a generic [LangChain Demo](https://github.com/hwchase17/notion-qa).
+It was initially inspired by https://github.com/hwchase17/notion-qa.
 
 # Environment Setup
 
@@ -15,11 +15,14 @@ git clone git@github.com:iterative/llm-demo.git
 cd llm-demo
 ```
 
-In order to set your environment up to run the code here, first install all requirements in a virtual env:
+You also need [Anaconda](https://www.anaconda.com/download/success) to install the
+environment (note: the FAISS dependency will not work without Anaconda).
+
+In order to set your environment up to run the code here, first install all requirements in a conda env:
 ```shell
-virtualenv env --python=python3.9
-source env/bin/activate
-pip install -r requirements.txt
+conda create -n mlops-for-llms-workshop --python=python3.11
+conda activate mlops-for-llms-workshop
+conda install -r requirements.txt
 ```
 
 Then set your Hugging Face API key (if you don't have one, get one
@@ -31,13 +34,11 @@ The preceeding spaces prevent the API key from staying in your bash history if t
 
 # Running
 
-Now you should be ready to re-run the training pipeline. Assuming you have not changed anything, nothing should need to run. Everything can be re-used for the DVC pull:
-```shell
-dvc pull progit.pdf
-dvc repro
-```
+Now you should be ready to run any code in the repo.
 
-Now you can startup the web UI using:
+You can start by exploring the notebooks are in `notebooks`, or run the whole pipeline in `src` (using DVC).
+
+There is also a demo web UI you can start using:
 ```shell
 streamlit run main.py
 ```

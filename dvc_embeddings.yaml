@@ -8,9 +8,19 @@ stages:
     - src/ingest.py
     outs:
     - docs.json
+  vectorize:
+    cmd: python src/vector_store.py
+    params:
+    - Embeddings
+    deps:
+    - docs.json
+    - src/vector_store.py
+    outs:
+    - docs.index
   run:
     cmd: python src/qa.py
     params:
+    - Embeddings
     - ChatLLM
     deps:
     - docs.index
