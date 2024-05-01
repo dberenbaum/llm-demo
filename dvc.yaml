@@ -8,19 +8,9 @@ stages:
     - ingest.py
     outs:
     - docs.json
-  vectorize:
-    cmd: python vector_store.py
-    params:
-    - Embeddings
-    deps:
-    - docs.json
-    - vector_store.py
-    outs:
-    - docs.index
   run:
     cmd: python qa.py
     params:
-    - Embeddings
     - ChatLLM
     deps:
     - docs.index
@@ -29,15 +19,10 @@ stages:
     outs:
     - results.json
   eval:
-    cmd: python eval.py
-    deps:
-    - ground_truths.csv
-    - results.json
-    - eval.py
-    outs:
-    - eval.csv
-  eval_ragas:
     cmd: python eval_ragas.py
+    params:
+    - Embeddings
+    - ChatLLM
     deps:
     - ground_truths.csv
     - results.json
