@@ -36,10 +36,18 @@ The preceeding spaces prevent the API key from staying in your bash history if t
 
 Now you should be ready to run any code in the repo.
 
-You can start by exploring the notebooks are in `notebooks`, or run the whole pipeline in `src` (using DVC).
+You can start by exploring the notebooks are in `notebooks`, or run the whole pipeline in `src` using [DVC](dvc.md):
+```shell
+$ dvc repro
+```
+The pipeline is set up to use a simple BM25 retriever, but you can replace it with an
+embeddings-based retriever by replacing the `dvc.yaml` file:
+```shell
+$ cp dvc_embeddings.yaml dvc.yaml
+```
 
 There is also a demo web UI you can start using:
 ```shell
-streamlit run main.py
+$ streamlit run src/main.py
 ```
 The log of interactions can be found in `chat.log`.

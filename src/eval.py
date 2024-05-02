@@ -9,40 +9,48 @@ from ragas import metrics
 from ragas import evaluate
 
 
-with open("results.json") as f:
-    results = json.load(f)
+def get_eval_dataset():
+    with open("results.json") as f:
+        results = json.load(f)
 
-questions, answers, contexts = [], [], []
-for row in results:
-    questions.append(row["Q"])
-    answers.append(row["A"])
-    contexts.append(row["context"])
+    questions, answers, contexts = [], [], []
+    for row in results:
+        questions.append(row["Q"])
+        answers.append(row["A"])
+        contexts.append(row["context"])
 
-truth = pd.read_csv("ground_truths.csv")
-ground_truth = truth["A"].to_list()
+    truth = pd.read_csv("ground_truths.csv")
+    ground_truth = truth["A"].to_list()
 
-dataset = Dataset.from_dict({
-        "question": questions,
-        "answer": answers,
-        "contexts": contexts,
-        "ground_truth": ground_truth
-        })
+    return Dataset.from_dict({
+            "question": questions,
+            "answer": answers,
+            "contexts": contexts,
+            "ground_truth": ground_truth
+            })
 
-with open("params.yaml") as f:
-    params = YAML().load(f)
-emb_params = params['Embeddings']
-chat_params = params['ChatLLM']
 
-emb = HuggingFaceEmbeddings(**emb_params)
-llm = HuggingFaceHub(**chat_params)
+def run_eval(dataset):
+    with open("params.yaml") as f:
+        params = YAML().load(f)
+    emb_params = params['Embeddings']
+    chat_params = params['ChatLLM']
 
-result = evaluate(
-    dataset,
-    metrics=[metrics.answer_similarity],
-    llm=llm,
-    embeddings=emb,
-)
+    emb = HuggingFaceEmbeddings(**emb_params)
+    llm = HuggingFaceHub(**chat_params)
 
-print(result)
-df = result.to_pandas()
-df.to_csv("eval_ragas.csv", header=True, index=False)
+    result = evaluate(
+        dataset,
+        metrics=[metrics.answer_similarity],
+        llm=llm,
+        embeddings=emb,
+    )
+    return result
+
+
+if __name__ == '__main__':
+    dataset = get_eval_dataset()
+    result = run_eval(dataset)
+    print(result)
+    df = result.to_pandas()
+    df.to_csv("eval_ragas.csv", header=True, index=False)

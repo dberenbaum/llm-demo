@@ -18,9 +18,8 @@ stages:
     outs:
     - docs.index
   run:
-    cmd: python src/qa.py
+    cmd: python src/qa_embeddings.py
     params:
-    - Embeddings
     - ChatLLM
     deps:
     - docs.index

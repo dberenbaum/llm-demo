@@ -10,22 +10,24 @@ from langchain.prompts import PromptTemplate
 from ruamel.yaml import YAML
 
 
-with open("params.yaml") as f:
-    params = YAML().load(f)
-chat_params = params['ChatLLM']
+def get_retriever():
+    with open("docs.json", "r") as f:
+        docs = json.load(f)
+    return BM25Retriever.from_texts(docs)
 
-with open("docs.json", "r") as f:
-    docs = json.load(f)
-retriever = BM25Retriever.from_texts(docs)
 
-df = pd.read_csv("ground_truths.csv")
-sample_questions = df["Q"].to_list()
+def get_llm():
+    with open("params.yaml") as f:
+        params = YAML().load(f)
+    chat_params = params['ChatLLM']
+    return HuggingFaceEndpoint(**chat_params)
 
-llm = HuggingFaceEndpoint(**chat_params)
-prompt = hub.pull("rlm/rag-prompt").messages[0].prompt
 
-records = []
-for question in sample_questions:
+def get_prompt():
+    return hub.pull("rlm/rag-prompt").messages[0].prompt
+
+
+def chain(question, retriever, llm, prompt):
     context = retriever.get_relevant_documents(question)
     context = [doc.page_content for doc in context]
     context_str = "\n\n".join(context)
@@ -33,15 +35,28 @@ for question in sample_questions:
 
     input = prompt.invoke({"question": question, "context": context_str})
     result = llm.invoke(input.text) 
+    return context, result
 
-    records.append({
-        "Q": question,
-        "A": result,
-        "context": context,
-    })
 
-    print(f"Answer: {result}")
-    print("\n\n")
+if __name__ == '__main__':
+    retriever = get_retriever()
+    llm = get_llm()
+    prompt = get_prompt()
 
-with open("results.json", "w") as f:
-    json.dump(records, f)
+    df = pd.read_csv("ground_truths.csv")
+    sample_questions = df["Q"].to_list()
+
+    records = []
+    for question in sample_questions:
+        context, result = chain(question, retriever, llm, prompt)
+        records.append({
+            "Q": question,
+            "A": result,
+            "context": context,
+        })
+
+        print(f"Answer: {result}")
+        print("\n\n")
+
+    with open("results.json", "w") as f:
+        json.dump(records, f)

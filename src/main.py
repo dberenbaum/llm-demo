@@ -1,36 +1,13 @@
 """Python file to serve as the frontend"""
 import json
-import langchain
 import streamlit as st
-from langchain import hub
-from langchain.vectorstores import FAISS
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_community.llms import HuggingFaceHub
-from ruamel.yaml import YAML
 from streamlit_chat import message
 
-langchain.debug = True
+from qa import get_retriever, get_llm, get_prompt, chain
 
-with open("params.yaml") as f:
-    params = YAML().load(f)
-emb_params = params['Embeddings']
-chat_params = params['ChatLLM']
-
-# Load the LangChain.
-emb = HuggingFaceEmbeddings(**emb_params)
-
-store = FAISS.load_local("docs.index", emb)
-retriever = store.as_retriever()
-
-llm = HuggingFaceHub(**chat_params)
-prompt = hub.pull("rlm/rag-prompt").messages[0].prompt
-
-def chain(question):
-    context = retriever.get_relevant_documents(question)
-    context = [doc.page_content for doc in context]
-    context_str = "\n\n".join(context)
-    input = prompt.invoke({"question": question, "context": context_str})
-    return llm.invoke(input.text) 
+retriever = get_retriever()
+llm = get_llm()
+prompt = get_prompt()
 
 # From here down is all the StreamLit UI.
 st.set_page_config(page_title="Git QA Bot", page_icon=":robot:")
@@ -51,7 +28,7 @@ def get_text():
 user_input = get_text()
 
 if user_input:
-    result = chain(user_input)
+    _, result = chain(user_input, retriever, llm, prompt)
 
     log_data = {'user_input': user_input, 'answer': result}
     log_str = json.dumps(log_data)
