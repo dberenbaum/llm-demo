@@ -20,6 +20,7 @@ stages:
   run:
     cmd: python src/qa_embeddings.py
     params:
+    - Embeddings
     - ChatLLM
     deps:
     - docs.index
@@ -37,4 +38,4 @@ stages:
     - results.json
     - src/eval.py
     outs:
-    - eval_ragas.csv
+    - eval.csv

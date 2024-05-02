@@ -53,4 +53,4 @@ if __name__ == '__main__':
     result = run_eval(dataset)
     print(result)
     df = result.to_pandas()
-    df.to_csv("eval_ragas.csv", header=True, index=False)
+    df.to_csv("eval.csv", header=True, index=False)

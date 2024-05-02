@@ -13,7 +13,6 @@ stages:
     params:
     - ChatLLM
     deps:
-    - docs.index
     - ground_truths.csv
     - src/qa.py
     outs:
@@ -28,4 +27,4 @@ stages:
     - results.json
     - src/eval.py
     outs:
-    - eval_ragas.csv
+    - eval.csv
