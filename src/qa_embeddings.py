@@ -48,7 +48,7 @@ if __name__ == '__main__':
     llm = get_llm()
     prompt = get_prompt()
 
-    df = pd.read_csv("ground_truths.csv")
+    df = pd.read_csv("ground_truths_dvc.csv")
     sample_questions = df["Q"].to_list()
 
     records = []

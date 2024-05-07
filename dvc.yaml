@@ -1,19 +1,28 @@
 stages:
   ingest:
     cmd: python src/ingest.py
-    params:
-    - TextSplitter
     deps:
-    - https://github.com/progit/progit2/releases/download/2.1.426/progit.pdf
+    - dvc_discord_channel.csv
     - src/ingest.py
     outs:
     - docs.json
-  run:
-    cmd: python src/qa.py
+  vectorize:
+    cmd: python src/vector_store.py
     params:
+    - Embeddings
+    deps:
+    - docs.json
+    - src/vector_store.py
+    outs:
+    - docs.index
+  run:
+    cmd: python src/qa_embeddings.py
+    params:
+    - Embeddings
     - ChatLLM
     deps:
-    - ground_truths.csv
+    - docs.index
+    - ground_truths_dvc.csv
     - src/qa.py
     outs:
     - results.json
@@ -23,7 +32,7 @@ stages:
     - Embeddings
     - ChatLLM
     deps:
-    - ground_truths.csv
+    - ground_truths_dvc.csv
     - results.json
     - src/eval.py
     outs:

@@ -19,7 +19,7 @@ def get_eval_dataset():
         answers.append(row["A"])
         contexts.append(row["context"])
 
-    truth = pd.read_csv("ground_truths.csv")
+    truth = pd.read_csv("ground_truths_dvc.csv")
     ground_truth = truth["A"].to_list()
 
     return Dataset.from_dict({
