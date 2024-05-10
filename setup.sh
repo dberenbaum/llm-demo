@@ -1,6 +1,5 @@
 set -eux
 
-su vscode
 conda create -y -n mlops-for-llms-workshop python==3.11
 conda init
 source /home/vscode/.bashrc
