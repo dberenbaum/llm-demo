@@ -2,5 +2,5 @@
     "name": "mlops-for-llms-workshop",
     "image": "mcr.microsoft.com/devcontainers/anaconda",
     "extensions": ["ms-python.python", "ms-toolsai.jupyter"],
-    "postCreateCommand": "conda create -y -n mlops-for-llms-workshop python==3.11 --file requirements.txt"
+    "postCreateCommand": "bash setup.sh"
 }
